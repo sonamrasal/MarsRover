@@ -5,31 +5,14 @@ import main.command.MoveCommand;
 import main.command.RightCommand;
 
 public class Rover {
-
-	private int x_coordinate;
 	private Direction direction;
-	private int y_coordinate;
 	private Plateau plateau;
+	private Coordinates coordinates;
 
-	public Rover(int x_coordinate, int y_coordinate, Direction direction, Plateau plateau) {
-		this.x_coordinate = x_coordinate;
-		this.y_coordinate = y_coordinate;
+	public Rover(Coordinates coordinates, Direction direction, Plateau plateau) {
+		this.coordinates = coordinates;
 		this.direction = direction;
 		this.plateau = plateau;
-	}
-
-	@Override
-	public boolean equals(Object other) {
-		if (this == other) {
-			return true;
-		}
-		if (null == other || !this.getClass().equals(other.getClass())) {
-			return false;
-		}
-		Rover rover = (Rover) other;
-		return this.x_coordinate == rover.x_coordinate
-				&& y_coordinate == rover.y_coordinate
-				&& this.direction.equals(rover.direction);
 	}
 
 	public void rotateLeft() {
@@ -41,11 +24,9 @@ public class Rover {
 	}
 
 	public void move() {
-		x_coordinate += direction.xIncrement();
-		y_coordinate += direction.yIncrement();
-		if(!plateau.isWithinRange(x_coordinate, y_coordinate)){
-			x_coordinate -= direction.xIncrement();
-			y_coordinate -= direction.yIncrement();
+		Coordinates coordinatesAfterIncrement = coordinates.afterIncrement(direction.xIncrement(), direction.yIncrement());
+		if (plateau.isWithinRange(coordinatesAfterIncrement)) {
+			this.coordinates = coordinatesAfterIncrement;
 		}
 	}
 
@@ -63,5 +44,9 @@ public class Rover {
 				break;
 			}
 		}
+	}
+
+	public String currentLocation() {
+		return coordinates.toString() + " " + direction.toString();
 	}
 }

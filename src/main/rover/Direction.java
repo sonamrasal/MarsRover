@@ -94,4 +94,9 @@ public enum Direction {
 
 	public abstract int yIncrement();
 
+	@Override
+	public String toString() {
+		return this.name().substring(0, 1);
+	}
+
 }

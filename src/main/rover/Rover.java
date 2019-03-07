@@ -1,6 +1,11 @@
 package main.rover;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import main.command.ICommand;
 import main.command.LeftCommand;
+import main.command.MacroCommand;
 import main.command.MoveCommand;
 import main.command.RightCommand;
 
@@ -31,19 +36,21 @@ public class Rover {
 	}
 
 	public void processCommands(String commands) {
+		List<ICommand> allCommands = new ArrayList();
 		for (char singleCommand : commands.toCharArray()) {
 			switch (singleCommand) {
 			case 'L':
-				new LeftCommand(this).execute();
+				allCommands.add(new LeftCommand());
 				break;
 			case 'R':
-				new RightCommand(this).execute();
+				allCommands.add(new RightCommand());
 				break;
 			case 'M':
-				new MoveCommand(this).execute();
+				allCommands.add(new MoveCommand());
 				break;
 			}
 		}
+		new MacroCommand(allCommands).execute(this);
 	}
 
 	public String currentLocation() {
